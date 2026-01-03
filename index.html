@@ -4,27 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivas Beach Cabanas - Enterprise Cash Book</title>
+    <title>Shivas Beach Cabanas - Professional Ledger</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Requirement 18: Bold, Darker fonts for entries */
-        input, select, textarea, td, .entry-text { color: #020617 !important; font-weight: 800 !important; }
-        .cash-in { color: #1d4ed8 !important; }
-        .cash-out { color: #be123c !important; }
-        .card-hl { color: #b45309 !important; }
-        .paypal-hl { color: #7e22ce !important; }
         
-        .pulse-live { animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+        /* Requirement 18: High Contrast Bold Fonts */
+        input, select, textarea, td, .entry-text { 
+            color: #020617 !important; 
+            font-weight: 800 !important; 
+        }
+        
+        .cash-in-text { color: #2563eb !important; }
+        .cash-out-text { color: #e11d48 !important; }
+        
+        .matrix-bg {
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .sync-pulse {
+            animation: sync-animation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes sync-animation {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.5); }
+        }
     </style>
     <script>
-      window.process = { env: { API_KEY: "" } };
+      // Safe environment initialization for Vercel
+      window.process = window.process || { env: { API_KEY: "" } };
     </script>
     <script type="importmap">
 {
@@ -41,7 +55,7 @@
 }
 </script>
 </head>
-<body class="overflow-x-hidden selection:bg-blue-100">
+<body class="matrix-bg overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
 </body>

@@ -3,37 +3,36 @@ import { GoogleGenAI } from "@google/genai";
 
 export async function fetchExchangeRates() {
   try {
-    // Fix: Always use the named parameter for apiKey initialization
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const key = process.env.API_KEY || (window as any).process?.env?.API_KEY;
+    if (!key) return { usd: 310, eur: 335 };
+
+    const ai = new GoogleGenAI({ apiKey: key });
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
-      contents: "Search for the latest USD to LKR and EUR to LKR exchange rates. Return ONLY a JSON object: { \"USD_LKR\": float, \"EUR_LKR\": float }. Use the current market rates.",
+      contents: "Search for the latest USD to LKR and EUR to LKR exchange rates. Return ONLY a JSON object: { \"USD_LKR\": float, \"EUR_LKR\": float }. Use the current market rates for Sri Lanka.",
       config: {
         tools: [{ googleSearch: {} }],
-        // Guideline: The output response.text may not be in JSON format when using googleSearch; avoid relying solely on responseMimeType
       },
     });
 
-    // Fix: guideline says response.text is a property, not a method
     const text = response.text || "{}";
     
-    // Model might return Markdown-wrapped JSON if search grounding is used
     let data;
     try {
       data = JSON.parse(text.trim());
     } catch (e) {
-      // Robust extraction of JSON block from text as response.text may contain grounding metadata or markdown
+      // Robust JSON extraction for Vercel/Gemini grounding edge cases
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       data = jsonMatch ? JSON.parse(jsonMatch[0]) : {};
     }
 
-    // Requirement 12: Round up like USD 309.1 as 310
+    // Round up as per user request (Requirement 12)
     return {
       usd: data.USD_LKR ? Math.ceil(data.USD_LKR) : 310,
       eur: data.EUR_LKR ? Math.ceil(data.EUR_LKR) : 335
     };
   } catch (error) {
-    console.error("Error fetching rates:", error);
+    console.error("Exchange Rate Error:", error);
     return { usd: 310, eur: 335 };
   }
 }
