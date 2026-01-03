@@ -14,10 +14,10 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Requirement 18: High Contrast Bold Fonts */
+        /* Requirement 18: High Contrast Bold Fonts for Entries */
         input, select, textarea, td, .entry-text { 
             color: #020617 !important; 
-            font-weight: 800 !important; 
+            font-weight: 900 !important; 
         }
         
         .cash-in-text { color: #2563eb !important; }
@@ -37,8 +37,8 @@
         }
     </style>
     <script>
-      // Safe environment initialization for Vercel
-      window.process = window.process || { env: { API_KEY: "" } };
+      // Global process shim for browser-based env access (Crucial for Vercel/Gemini)
+      window.process = { env: { API_KEY: "" } };
     </script>
     <script type="importmap">
 {
