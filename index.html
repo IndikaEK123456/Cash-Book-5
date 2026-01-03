@@ -14,14 +14,11 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Requirement 18: High Contrast Bold Fonts for Entries */
+        /* High Contrast Bold Fonts for Entries - Requirement 18 */
         input, select, textarea, td, .entry-text { 
             color: #020617 !important; 
             font-weight: 900 !important; 
         }
-        
-        .cash-in-text { color: #2563eb !important; }
-        .cash-out-text { color: #e11d48 !important; }
         
         .matrix-bg {
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
@@ -37,8 +34,9 @@
         }
     </style>
     <script>
-      // Global process shim for browser-based env access (Crucial for Vercel/Gemini)
-      window.process = { env: { API_KEY: "" } };
+      // Production-grade process shim for Vercel/Client compatibility
+      window.process = window.process || {};
+      window.process.env = window.process.env || { API_KEY: "" };
     </script>
     <script type="importmap">
 {
