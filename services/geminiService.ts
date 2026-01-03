@@ -10,8 +10,7 @@ export async function fetchExchangeRates() {
       contents: "Search for the latest USD to LKR and EUR to LKR exchange rates. Return ONLY a JSON object: { \"USD_LKR\": float, \"EUR_LKR\": float }. Use the current market rates.",
       config: {
         tools: [{ googleSearch: {} }],
-        // responseMimeType is a hint, model with tools might still return plain text with JSON block
-        responseMimeType: "application/json"
+        // Guideline: The output response.text may not be in JSON format when using googleSearch; avoid relying solely on responseMimeType
       },
     });
 
@@ -23,7 +22,7 @@ export async function fetchExchangeRates() {
     try {
       data = JSON.parse(text.trim());
     } catch (e) {
-      // Robust extraction of JSON block from text
+      // Robust extraction of JSON block from text as response.text may contain grounding metadata or markdown
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       data = jsonMatch ? JSON.parse(jsonMatch[0]) : {};
     }
